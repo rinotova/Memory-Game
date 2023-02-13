@@ -20,7 +20,7 @@ function fillArrayWithPairs(numberOfPairs: number) {
 }
 
 function App() {
-  const [numberOfPairs, setNumberOfPairs] = useState<number>(8);
+  const [numberOfPairs, setNumberOfPairs] = useState<number>(0);
   const [selectedPair, setSelectedPair] = useState<any[]>([]);
   const [discoveredPairs, setDiscoveredPairs] = useState<Map<number, any[]>>(
     new Map()
