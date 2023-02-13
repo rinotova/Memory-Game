@@ -91,7 +91,7 @@ function App() {
       {/** Memory tiles */}
 
       {tilesArray.length > 0 && (
-        <div className={`grid grid-cols-${4} gap-2`}>
+        <div className={`grid grid-cols-4 gap-2`}>
           {tilesArray.map((position) => {
             const id = position.id;
             const num = position.num;
