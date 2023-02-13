@@ -20,7 +20,7 @@ function fillArrayWithPairs(numberOfPairs: number) {
 }
 
 function App() {
-  const [numberOfPairs, setNumberOfPairs] = useState<number>(0);
+  const [numberOfPairs, setNumberOfPairs] = useState<number>(8);
   const [selectedPair, setSelectedPair] = useState<any[]>([]);
   const [discoveredPairs, setDiscoveredPairs] = useState<Map<number, any[]>>(
     new Map()
@@ -42,13 +42,13 @@ function App() {
     setCurrentTile(id);
     if (selectedPair.length === 0) {
       setSelectedPair([num]);
-    }
-
-    if (selectedPair.length === 1) {
+    } else if (selectedPair.length === 1) {
       if (selectedPair[0] === num) {
         setDiscoveredTiles(num);
+        setSelectedPair([]);
+      } else {
+        setSelectedPair([num]);
       }
-      setSelectedPair([]);
     }
   }
 
@@ -58,7 +58,12 @@ function App() {
 
   function isDiscovered(num: number, id: number) {
     const currentEntry = discoveredPairs.get(num);
-    return id === currentTile || currentEntry?.length === 2;
+    const isMatched = currentEntry
+      ? currentEntry.length && currentEntry.length > 0
+        ? true
+        : false
+      : false;
+    return id === currentTile || isMatched;
   }
 
   const tilesArray = useMemo(
@@ -86,20 +91,21 @@ function App() {
       {/** Memory tiles */}
 
       {tilesArray.length > 0 && (
-        <div className={`grid grid-cols-4 gap-2`}>
+        <div className={`grid grid-cols-${4} gap-2`}>
           {tilesArray.map((position) => {
             const id = position.id;
             const num = position.num;
+            const isOpen = isDiscovered(num, id);
             return (
               <button
                 onClick={handleMemoryTileClick.bind(null, num, id)}
-                className={`cursor-pointer w-28 h-28 bg-slate-300 flex items-center justify-center ${
-                  isDiscovered(num, id) ? 'bg-lime-300' : ''
+                className={`cursor-pointer w-28 h-28  flex items-center justify-center ${
+                  isOpen ? 'bg-lime-300' : 'bg-slate-300'
                 }`}
                 key={id}
-                disabled={isDiscovered(num, id)}
+                disabled={isOpen}
               >
-                <p className={isDiscovered(num, id) ? '' : 'hidden'}>{num}</p>
+                <p className={isOpen ? '' : 'hidden'}>{num}</p>
               </button>
             );
           })}
